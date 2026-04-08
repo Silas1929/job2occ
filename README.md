@@ -56,7 +56,6 @@ Step 4: O*NET 国际职业编码映射
 ```
 job2occ/
 ├── pipeline.py                  # 主调度器（多年/多卡并行）
-├── test_run.py                  # 小样本速度与质量验证脚本
 ├── requirements_cloud.txt       # Python 依赖清单
 ├── .gitignore
 ├── DEPLOYMENT_GUIDE.md          # 云端完整部署手册
@@ -147,14 +146,7 @@ pip install vllm==0.6.6
 pip install -r requirements_cloud.txt
 ```
 
-### 2. 小样本验证
-
-```bash
-cd /root/autodl-tmp
-python job2occ/test_run.py --limit 1000
-```
-
-### 3. 运行 Pipeline
+### 2. 运行 Pipeline
 
 ```bash
 # 单年测试（推荐先跑）
