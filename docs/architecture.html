@@ -242,7 +242,7 @@ footer a:hover{text-decoration:underline}
     <div class="section-title">Four-Stage Pipeline</div>
     <p class="section-desc">
       Each stage runs as an independent subprocess with its own checkpoint,
-      enabling crash recovery and multi-GPU parallelism.
+      supporting crash recovery and multi-GPU parallelism.
     </p>
   </div>
 
@@ -262,7 +262,7 @@ footer a:hover{text-decoration:underline}
     <div class="step-card fade-in">
       <div class="step-number">1</div>
       <h3>Data Cleaning</h3>
-      <p class="step-desc">Deduplicate by record ID and filter out descriptions shorter than 30 effective characters.</p>
+      <p class="step-desc">Deduplicate by record ID and discard descriptions below 30 effective characters.</p>
       <div class="step-meta">
         <span class="tag accent">CPU Only</span>
         <span class="tag">CSV &rarr; CSV</span>
@@ -283,7 +283,7 @@ footer a:hover{text-decoration:underline}
     <div class="step-card fade-in">
       <div class="step-number">2</div>
       <h3>LLM Standardisation</h3>
-      <p class="step-desc">Extract and normalise core job responsibilities using Qwen2.5-7B with vLLM offline batch inference.</p>
+      <p class="step-desc">Extract and normalise core job duties via Qwen2.5-7B with vLLM offline batch inference.</p>
       <div class="step-meta">
         <span class="tag">Qwen2.5-7B AWQ</span>
         <span class="tag accent">vLLM Batch</span>
@@ -304,7 +304,7 @@ footer a:hover{text-decoration:underline}
     <div class="step-card fade-in">
       <div class="step-number">3</div>
       <h3>Semantic Matching</h3>
-      <p class="step-desc">Embed with BGE-M3, match against China's Occupation Taxonomy via GPU cosine top-k.</p>
+      <p class="step-desc">Embed with BGE-M3 and match against the Chinese Standard Classification of Occupations (CSCO) via GPU cosine top-k.</p>
       <div class="step-meta">
         <span class="tag">BGE-M3</span>
         <span class="tag accent">GPU Cosine</span>
@@ -325,7 +325,7 @@ footer a:hover{text-decoration:underline}
     <div class="step-card fade-in">
       <div class="step-number">4</div>
       <h3>O*NET Mapping</h3>
-      <p class="step-desc">Map Chinese codes to O*NET-SOC via DuckDB SQL JOIN, output Hive-partitioned Parquet.</p>
+      <p class="step-desc">Map CSCO codes to O*NET-SOC via DuckDB SQL JOIN and output Hive-partitioned Parquet.</p>
       <div class="step-meta">
         <span class="tag">DuckDB</span>
         <span class="tag accent">SQL JOIN</span>
@@ -337,7 +337,7 @@ footer a:hover{text-decoration:underline}
   <!-- Stats bar -->
   <div class="stats-bar">
     <div class="stat-item fade-in">
-      <div class="stat-value">160M+</div>
+      <div class="stat-value">100M+</div>
       <div class="stat-label">Records Processed</div>
     </div>
     <div class="stat-item fade-in">
@@ -345,7 +345,7 @@ footer a:hover{text-decoration:underline}
       <div class="stat-label">Years (2015-2024)</div>
     </div>
     <div class="stat-item fade-in">
-      <div class="stat-value">173GB</div>
+      <div class="stat-value">170GB+</div>
       <div class="stat-label">Raw Input Data</div>
     </div>
     <div class="stat-item fade-in">
@@ -363,7 +363,7 @@ footer a:hover{text-decoration:underline}
     <div class="section-label">Features</div>
     <div class="section-title">Built for Scale & Reliability</div>
     <p class="section-desc">
-      Designed to process hundreds of millions of records on cloud GPU servers
+      Designed for large-scale processing on cloud GPU infrastructure
       with minimal manual intervention.
     </p>
   </div>
@@ -374,21 +374,21 @@ footer a:hover{text-decoration:underline}
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
       </div>
       <h3>Checkpoint Recovery</h3>
-      <p>Each step maintains independent checkpoints. Crash mid-run? Restart from the last saved position automatically.</p>
+      <p>Each step maintains independent checkpoints. On failure, resume from the last saved position automatically.</p>
     </div>
     <div class="feature-card fade-in">
       <div class="feature-icon" style="background:rgba(168,85,247,0.12)">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
       </div>
       <h3>Multi-GPU Parallel</h3>
-      <p>Set <code>NUM_GPUS=N</code> and different years are dispatched to different GPUs. Linear speedup.</p>
+      <p>Set <code>NUM_GPUS=N</code> to dispatch each year to a separate GPU. Linear speedup.</p>
     </div>
     <div class="feature-card fade-in">
       <div class="feature-icon" style="background:rgba(99,102,241,0.12)">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
       </div>
       <h3>Optional Reranking</h3>
-      <p>Enable BGE-Reranker-v2-M3 cross-encoder to refine top-k candidates for higher accuracy matching.</p>
+      <p>Enable BGE-Reranker-v2-M3 cross-encoder to refine top-k candidates for higher-precision matching.</p>
     </div>
     <div class="feature-card fade-in">
       <div class="feature-icon" style="background:rgba(34,197,94,0.12)">
@@ -409,7 +409,7 @@ footer a:hover{text-decoration:underline}
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
       </div>
       <h3>Persistent Logging</h3>
-      <p>All steps write structured logs to disk. Diagnose issues hours or days after they occurred.</p>
+      <p>All steps write structured logs to disk for post-hoc diagnostics.</p>
     </div>
   </div>
 </div>
