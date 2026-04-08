@@ -1,0 +1,52 @@
+# =============================================================================
+# 云端 Pipeline 依赖
+# 安装顺序：先装 vLLM（自带 torch），再装其他依赖
+# =============================================================================
+
+# --- vLLM（Step2 LLM 推理 + Step3 Embedding，单独安装）---
+# 安装命令：pip install vllm==0.6.6
+# vLLM 会自动安装兼容的 torch、transformers、accelerate
+# 不在此文件中列出，避免版本冲突
+
+# --- Transformers 生态（vLLM 内部依赖，通常自动安装，显式固定版本）---
+transformers>=4.45.0
+
+# --- 数据处理 ---
+numpy>=1.26.0
+pandas>=2.1.0
+
+# --- Parquet 读写 ---
+pyarrow>=14.0.0
+
+# --- DuckDB（Step4 JOIN + 查询分析）---
+duckdb>=0.10.0
+
+# --- Excel 读取（Step3 读取职业分类大典 .xlsx）---
+openpyxl>=3.1.0
+
+# --- 配置文件 ---
+pyyaml>=6.0
+
+# --- Reranker（Step3 精排，可选）---
+FlagEmbedding>=1.2.0
+
+# --- 进度条 ---
+tqdm>=4.66.0
+
+# =============================================================================
+# 完整安装步骤（上云后在服务器上执行）
+# =============================================================================
+# 1. 创建 conda 环境（Python 3.10，装在数据盘）：
+#    conda create -p /root/autodl-tmp/envs/recruit python=3.10 -y
+#    conda activate /root/autodl-tmp/envs/recruit
+#
+# 2. 安装 vLLM（含 AWQ + embedding 支持）：
+#    pip install vllm==0.6.6
+#
+# 3. 安装其他依赖：
+#    pip install -r requirements_cloud.txt
+#
+# 4. 验证安装：
+#    python -c "import vllm; print(vllm.__version__)"          # 预期: 0.6.6
+#    python -c "import torch; print(torch.cuda.is_available())" # 预期: True
+#    python -c "import duckdb; print(duckdb.__version__)"

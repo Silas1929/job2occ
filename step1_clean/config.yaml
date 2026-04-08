@@ -1,0 +1,12 @@
+# =============================================================================
+# Step1 数据清洗配置
+# =============================================================================
+
+# --- 输入输出路径 ---
+input_dir: "/root/autodl-tmp/data/raw"
+input_filename_template: "recruitment_infos_content_{year}.csv"
+output_dir: "/root/autodl-tmp/data/input"
+output_filename_template: "recruitment_infos_content_{year}_step1_clean.csv"
+
+# --- 清洗参数 ---
+min_effective_len: 30    # 最低有效字符长度阈值：低于该阈值的职位描述会被剔除

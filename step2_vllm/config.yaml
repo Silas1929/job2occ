@@ -1,0 +1,76 @@
+# =============================================================================
+# Step2 vLLM 云端配置
+# =============================================================================
+
+# --- 输入输出路径 ---
+input_dir: "/root/autodl-tmp/data/input"
+input_filename_template: "recruitment_infos_content_{year}_step1_clean.csv"
+output_dir: "/root/autodl-tmp/data/output/standardized"    # 写入 year={year}/data.parquet
+resume_state_dir: "/root/autodl-tmp/data/output/checkpoints/step2"
+
+# --- 字段配置（与本地版本一致）---
+text_column: "position_responsibilities"
+output_column: "standardized_job_description"
+
+# --- vLLM offline batch 配置 ---
+llm_model: "/root/autodl-tmp/models/qwen2.5-7b-instruct-awq"
+tensor_parallel_size: 1          # 单卡设为 1；多卡张量并行可增大
+max_model_len: 2048              # 每条请求 ~550 tokens，2048 足够；降低后 KV cache 池能容纳更多并发
+max_num_seqs: 350                # 之前 128@4096 安全 → 256@2048 等效显存占用，理论 decode 吞吐翻倍
+
+# --- 批处理与写盘 ---
+llm_batch_size: 10000            # 每次调用 llm.generate() 的条数；10000>>max_num_seqs 不影响速度，崩溃最多损失1万条
+write_chunk_size: 10000          # 每次写盘的条数（与 llm_batch_size 对齐，每batch写一个chunk）
+
+# --- LLM 生成参数 ---
+llm_temperature: 0.0             # greedy decoding：绕过 _random_sample 代码路径，根治 vLLM 0.6.6 CUDA crash
+llm_top_p: 0.9
+llm_top_k: 30
+llm_num_predict: 150             # 输出 2-5 条职责通常 80-120 tokens；150 留足余量，减少 KV cache 浪费
+max_input_chars: 1024
+
+# --- Few-shot 示例（原样复制自本地 config.yaml）---
+example_tasks:
+  - "1.策划网站内容;2.组织网站稿件;3.运用信息发布系统或相关软件,制作网页;4.编辑网页内容;5.进行网站内容的检查、管理。"
+  - "1.使用功能测试用例等工具,测试计算机软件功能;2.使用性能测试用例等工具,进行计算机软件负载测试和压力测试;3.使用计算机及附属设备,测试计算机软件的稳定性、兼容性等参数;4.记录测试数据和案例;5.编写、制作测试报告。"
+  - "1.根据实际发生的经济业务或者事项进行会计核算;2.对单位的经济活动或者事项进行会计监督;3.制订单位的内部会计管理制度;4.分析、运用财务、业务等信息,服务单位规划、决策、控制、评价等工作。"
+
+# --- 职责提取规则（原样复制自本地 config.yaml）---
+duty_headers:
+  - "岗位职责"
+  - "工作职责"
+  - "岗位内容"
+  - "工作内容"
+  - "职位描述"
+  - "岗位描述"
+  - "主要职责"
+  - "主要工作"
+  - "职责描述"
+  - "工作任务"
+  - "任务描述"
+  - "职责范围"
+  - "岗位任务"
+
+negative_headers:
+  - "任职要求"
+  - "岗位要求"
+  - "任职资格"
+  - "任职条件"
+  - "职位要求"
+  - "岗位条件"
+  - "资格要求"
+  - "加分项"
+  - "福利待遇"
+  - "薪资待遇"
+  - "薪资福利"
+  - "公司介绍"
+  - "企业介绍"
+  - "关于我们"
+  - "我们提供"
+  - "你将获得"
+  - "你需要"
+  - "我们希望"
+
+# negative_phrases / positive_verbs 已移除 —— 云端轻量版 DutyExtractor
+# 不再做逐行 phrase 过滤，避免误杀含"熟悉""培训""能力"等词的合法职责行。
+# 7B LLM 有足够能力区分职责 vs 任职要求，无需 regex 预过滤。

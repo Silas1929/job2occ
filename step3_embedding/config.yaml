@@ -1,0 +1,55 @@
+# =============================================================================
+# Step3 BGE-M3 云端配置
+# =============================================================================
+
+# --- 输入输出路径 ---
+input_dir: "/root/autodl-tmp/data/output/standardized"   # 读 year={year}/data.parquet
+output_dir: "/root/autodl-tmp/data/output/matched"       # 写 year={year}/data.parquet
+
+# --- 职业分类大典参考表 ---
+occupation_path: "/root/autodl-tmp/data/reference/职业分类大典2022_完整数据.xlsx"
+occupation_sheet: "职业分类数据"
+occupation_name_field: "Level4_Name"
+occupation_task_field: "main_task"
+
+# --- 向量缓存 ---
+cache_dir: "/root/autodl-tmp/data/output/cache"
+
+# --- 模型配置 ---
+embed_model: "/root/autodl-tmp/models/bge-m3"
+rerank_model: "/root/autodl-tmp/models/bge-reranker-v2-m3"
+device: "cuda"
+model_dtype: "float16"              # 云端用 float16（本地 MPS 用 float32）
+
+# --- 批处理 ---
+embedding_batch_size: 256           # vLLM 内部自动管理 batch，此参数保留兼容性
+query_chunk_size: 250000            # GPU cosine 分块大小（4090 24GB VRAM 安全值）
+                                    # 若 OOM 可降至 100000
+
+# --- 匹配参数 ---
+top_k: 10
+use_rerank: false                   # 全量 1.6 亿条不建议开启 reranker（极慢）
+rerank_score_threshold: 0.2
+rerank_min_embed_score: 0.4
+rerank_normalize: true
+
+# --- 最低 embedding 相似度阈值 ---
+min_embed_score: 0.55               # 低于此分数的匹配标记为未匹配
+
+# --- 字段配置 ---
+job_text_field: "standardized_job_description"
+
+# --- 输出标签（与本地版本一致）---
+unmatched_label: "未匹配"
+is_match_yes: "是"
+is_match_no: "否"
+
+# --- 可疑职业验证规则（与本地版本完全一致）---
+suspicious_occupations:
+  法官: ["法律", "案件", "审判", "法院", "诉讼", "判决", "庭审"]
+  检察官: ["法律", "案件", "检察", "起诉", "公诉", "法律监督"]
+  律师: ["法律", "案件", "辩护", "法律顾问", "诉讼", "代理"]
+  宗教教职人员: ["宗教", "教会", "寺庙", "信仰", "教义", "礼拜"]
+  僧人: ["佛教", "寺院", "修行", "佛法", "禅修"]
+  道士: ["道教", "道观", "法事", "道法", "修炼"]
+  牧师: ["教会", "牧养", "礼拜", "基督教", "神学"]

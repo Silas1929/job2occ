@@ -1,0 +1,15 @@
+# =============================================================================
+# Step4 O*NET 映射云端配置
+# =============================================================================
+
+# --- 输入输出路径 ---
+input_dir: "/root/autodl-tmp/data/output/matched"     # 读 year={year}/data.parquet
+output_dir: "/root/autodl-tmp/data/output/final"      # Hive 分区: year=X/level1=Y/data.parquet
+
+# --- 参考数据（单独存放，与代码无关）---
+mapping_table_path: "/root/autodl-tmp/data/reference/dadian_to_onet_mapping.csv"
+onet_detail_path: "/root/autodl-tmp/data/reference/onet_for_matching.csv"
+
+# --- JOIN 配置（与本地版本一致）---
+dadian_code_field: "match_Level4_Code"    # Step3 输出中的大典编码列名
+include_onet_details: true                # 是否附加 O*NET 描述和任务文本

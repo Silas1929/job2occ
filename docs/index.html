@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>job2occ - Recruitment Data Occupation Pipeline</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg-deep:#0d0f1c;
+  --primary:#6366f1;
+  --primary-light:#818cf8;
+  --accent:#06b6d4;
+  --accent2:#a855f7;
+  --text:#e2e8f0;
+  --text-dim:#94a3b8;
+  --text-bright:#f8fafc;
+  --gradient:linear-gradient(135deg,#6366f1,#a855f7);
+}
+html,body{height:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Noto Sans SC',sans-serif;
+  background:var(--bg-deep);
+  color:var(--text);
+  overflow:hidden;
+}
+
+/* ── BG Glow ── */
+.bg-glow{
+  position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(ellipse 800px 500px at 50% 45%,rgba(99,102,241,0.10),transparent),
+    radial-gradient(ellipse 600px 400px at 25% 70%,rgba(168,85,247,0.06),transparent),
+    radial-gradient(ellipse 500px 400px at 75% 30%,rgba(6,182,212,0.05),transparent);
+}
+
+/* ── Hero ── */
+.hero{
+  position:relative;z-index:1;
+  width:100%;height:100vh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;
+  padding:0 32px;
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:7px 18px;border-radius:20px;font-size:13px;
+  background:rgba(99,102,241,0.10);border:1px solid rgba(99,102,241,0.22);
+  color:var(--primary-light);margin-bottom:40px;letter-spacing:0.5px;
+}
+.hero-badge .dot{
+  width:7px;height:7px;border-radius:50%;background:var(--accent);
+  animation:pulse-dot 2s ease infinite;
+}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.5)}}
+
+.hero h1{
+  font-size:clamp(3rem,7vw,5.5rem);
+  font-weight:700;letter-spacing:-2px;line-height:1.1;
+  margin-bottom:28px;
+  background:linear-gradient(135deg,var(--text-bright) 0%,var(--primary-light) 55%,var(--accent) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero p{
+  font-size:clamp(1.05rem,1.8vw,1.3rem);
+  color:var(--text-dim);max-width:640px;
+  line-height:1.65;margin-bottom:48px;
+}
+.hero-actions{display:flex;gap:16px;flex-wrap:wrap;justify-content:center}
+
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:14px 32px;border-radius:12px;font-size:16px;font-weight:500;
+  text-decoration:none;transition:all .25s;border:none;cursor:pointer;
+}
+.btn-primary{
+  background:var(--gradient);color:#fff;
+  box-shadow:0 4px 24px rgba(99,102,241,0.35);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(99,102,241,0.5)}
+.btn-outline{
+  background:transparent;color:var(--text);
+  border:1px solid rgba(148,163,184,0.25);
+}
+.btn-outline:hover{
+  border-color:var(--primary);color:var(--primary-light);
+  background:rgba(99,102,241,0.06);
+}
+
+/* ── Responsive ── */
+@media(max-width:480px){
+  .hero h1{letter-spacing:-1px}
+  .hero p{padding:0 8px}
+  .btn{padding:12px 24px;font-size:15px}
+}
+</style>
+</head>
+<body>
+<div class="bg-glow"></div>
+
+<section class="hero">
+  <h1>job2occ</h1>
+  <p>Occupation standardisation pipeline for 160M+ Chinese recruitment records.</p>
+  <div class="hero-actions">
+    <a href="https://github.com" class="btn btn-primary">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+      View on GitHub
+    </a>
+    <a href="architecture.html" class="btn btn-outline">Architecture</a>
+  </div>
+</section>
+
+
+</body>
+</html>

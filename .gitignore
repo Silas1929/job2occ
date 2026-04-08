@@ -1,0 +1,30 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+
+# Data (not for open source)
+*.csv
+*.xlsx
+*.parquet
+*.npy
+
+# Models
+models/
+
+# Logs & checkpoints
+logs/
+checkpoints/
+
+# IDE & tools
+.vscode/
+.idea/
+.claude/
+
+# Temp
+*.tmp
+*.bak
